@@ -1,0 +1,5 @@
+docker service create \
+        --name my-images-name-app \
+        --publish published=8000,target=8000 \
+        --replicas 3 \
+        my-images-name
