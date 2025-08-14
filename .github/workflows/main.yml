@@ -31,7 +31,18 @@ jobs:
     needs: build-docker-image
     #needs가 없으면 병렬로 돈다고, needs가 있어야 build-docker-image가 끝나고 실행됨
     name: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Deploying application..."
-      - run: ls -al / 
+    runs-on: [ self-hosted, ubuntu-latest ]
+    steps:    
+      - name: 기존 서비스 제거
+        run: docker service rm my-images-name || echo "서비스 없음, 계속 진행"
+      - name: Docker Hub 로그인 (안전)
+        run: echo "${DOCKER_HUB_PASSWORD}" | docker login -u zimonhwang1 --password-stdin
+      - name: 이미지 Pull
+        run: docker pull zimonhwang1/my-images-name:latest
+      - name: 기존 서비스 제거 후 새 서비스 생성
+        run: docker service create \
+              --name my-images-name \
+              --publish published=8014,target=8014 \
+              --replicas 3 \
+              zimonhwang1/my-images-name:latest
+                    
