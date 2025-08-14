@@ -12,5 +12,5 @@ jobs:
     runs-on: ubuntu-latest
     #shell 명령어를 사용할 수 있음 사용해볼 예정
     steps:
-      - run: ls -al
+      - run: ls -al /
   
