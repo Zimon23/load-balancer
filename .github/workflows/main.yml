@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     #shell 명령어를 사용할 수 있음 사용해볼 예정
     steps:
+      - name: 원격저장소에서 소스를 복사
+        uses: action/checkout@v3
+        
       - name: image building   #name뒤에 실행하려면 run 앞에 - 가 없어야 한다   
         run: |
           echo 'image building stage 1'
