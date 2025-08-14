@@ -6,6 +6,9 @@ on:
   push:
     branches: [ main ]
 
+env:
+  USERNAME: zimonhwang1
+
 jobs:
   build-docker-image:
   #github 가상머신이나 운영서버으 배포/실행에 해당하는 걸 나타낸다고
@@ -18,13 +21,13 @@ jobs:
       - name: Dockerfile 복사
         run: 
       - name: image building   #name뒤에 실행하려면 run 앞에 - 가 없어야 한다   
-        run: docker build -t zimonhwang1/my-images-name:latest .
+        run: docker build -t ${{env.USERNAME}}/my-images-name:latest .
       
       - name: docker hub에 로그인을 한다.
-        run : docker login -u zimonhwang1 -p ${{ secrets.DOCKER_HUB_PASSWORD}}
+        run : docker login -u ${{env.USERNAME}} -p ${{ secrets.DOCKER_HUB_PASSWORD}}
 
       - name: docker hub에 push 한다.
-        run: docker push zimonhwang1/my-images-name:latest
+        run: docker push ${{env.USERNAME}}/my-images-name:latest
       
 
   deploy:
@@ -36,14 +39,14 @@ jobs:
       - name: 기존 서비스 제거
         run: docker service rm my-images-name || echo "서비스 없음, 계속 진행"
       - name: Docker Hub 로그인 (안전)
-        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u zimonhwang1 --password-stdin
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u ${{env.USERNAME}} --password-stdin
       - name: 이미지 Pull
-        run: docker pull zimonhwang1/my-images-name:latest
+        run: docker pull ${{env.USERNAME}}/my-images-name:latest
       - name: 기존 서비스 제거 후 새 서비스 생성
         run: |
           docker service create \
               --name my-images-name \
               --publish published=8014,target=8014 \
               --replicas 3 \
-              zimonhwang1/my-images-name:latest
+              ${{env.USERNAME}}/my-images-name:latest
                     
