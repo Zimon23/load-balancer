@@ -1,0 +1,16 @@
+#출력되는 이름
+name: 빌드 및 배포
+#개발자 저장소에서 push 하면 진행할것, main branch에서만
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-docker-image:
+  #github 가상머신이나 운영서버으 배포/실행에 해당하는 걸 나타낸다고
+    runs-on: ubuntu-latest
+    #shell 명령어를 사용할 수 있음 사용해볼 예정
+    steps:
+      - run: ls -al
+  
