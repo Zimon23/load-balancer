@@ -40,7 +40,8 @@ jobs:
       - name: 이미지 Pull
         run: docker pull zimonhwang1/my-images-name:latest
       - name: 기존 서비스 제거 후 새 서비스 생성
-        run: docker service create \
+        run: |
+          docker service create \
               --name my-images-name \
               --publish published=8014,target=8014 \
               --replicas 3 \
