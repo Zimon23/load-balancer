@@ -13,4 +13,13 @@ jobs:
     #shell 명령어를 사용할 수 있음 사용해볼 예정
     steps:
       - run: ls -al /
-  
+      - run: echo "Building Docker image..."
+
+  deploy:
+    needs: build-docker-image
+    #needs가 없으면 병렬로 돈다고, needs가 있어야 build-docker-image가 끝나고 실행됨
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying application..."
+      - run: ls -al /
