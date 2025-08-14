@@ -12,8 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     #shell 명령어를 사용할 수 있음 사용해볼 예정
     steps:
-      - run: ls -al /
-      - run: echo "Building Docker image..."
+      - name: image building   #name뒤에 실행하려면 run 앞에 - 가 없어야 한다   
+        run: |
+          echo 'image building stage 1'
+          echo "Building Docker image..."
+          echo 'image building stage 2'
 
   deploy:
     needs: build-docker-image
@@ -22,4 +25,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Deploying application..."
-      - run: ls -al
+      - run: ls -al/
